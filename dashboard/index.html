@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar: pre-token protocols ranked by launch-odds-weighted value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<a class="skip" href="#board">Skip to the board</a>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <h1>Token Radar <span class="ver">odds-weighted-1</span></h1>
+      <p class="sub">Pre-token protocols ranked by expected value: peer-priced value, weighted by fitted launch odds.</p>
+    </div>
+    <nav class="tabs" aria-label="Views">
+      <a href="#/board" data-tab="board" class="on">Board</a>
+      <a href="#/live" data-tab="live">Already trades</a>
+      <a href="#/method" data-tab="method">Model &amp; validation</a>
+    </nav>
+  </div>
+  <div class="wrap kpis" id="kpis" aria-label="Headline figures"></div>
+</header>
+<main class="wrap" id="board" tabindex="-1">
+  <section id="view-board" aria-label="Ranked board">
+    <div class="controls" id="controls">
+      <label class="ctl search">Search <input id="q" type="search" placeholder="Name, slug or category" autocomplete="off"></label>
+      <label class="ctl">Category <select id="f-cat"><option value="">All categories</option></select></label>
+      <label class="ctl">Chain <select id="f-chain"><option value="">All chains</option></select></label>
+      <label class="ctl">Verdict <select id="f-verdict"><option value="">Any</option><option value="farm">Farm</option><option value="thin">Thin</option><option value="watch">Watch</option></select></label>
+      <label class="ctl">Confidence <select id="f-conf"><option value="">Any</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+      <label class="ctl">Sort by <select id="f-sort">
+        <option value="expected">Expected value</option><option value="raw">Raw value</option><option value="odds">Launch odds</option>
+        <option value="tvl">TVL</option><option value="growth">7d growth</option><option value="age">Age</option>
+      </select></label>
+      <label class="ctl check"><input id="f-watch" type="checkbox"> Watchlist only</label>
+      <div class="ctl odds-w">
+        <span>Odds weight <b id="odds-w-val">1.00</b></span>
+        <input id="odds-w" type="range" min="0" max="100" value="100" aria-label="Launch-odds weight">
+        <span class="hint">0 = raw value only · 1 = odds-weighted</span>
+      </div>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+    <div class="tablewrap">
+      <table id="board-table">
+        <thead><tr>
+          <th data-sort="rank">#</th><th data-sort="name">Protocol</th><th data-sort="category">Category</th>
+          <th data-sort="tvl" class="num">TVL</th><th data-sort="growth" class="num">7d</th>
+          <th data-sort="odds" class="num">Launch odds</th><th data-sort="expected" class="num">Expected value</th>
+          <th data-sort="verdict">Verdict</th>
+        </tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <p class="fine">Expected value = raw peer-priced value × fitted launch odds. The odds score is a cross-sectional fit, not a prediction that or when a token is issued. Gas figures in farm plans are planning estimates, not snapshot data.</p>
+  </section>
+  <section id="view-live" aria-label="Protocols whose token already trades" hidden>
+    <h2>Already trades</h2>
+    <p class="sub2">The market's own values. These protocols anchor the peer multiples; they are never ranked on the board.</p>
+    <div class="tablewrap"><table id="live-table">
+      <thead><tr><th>Protocol</th><th>Category</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">7d</th><th class="num">Mcap / TVL</th></tr></thead>
+      <tbody id="live-rows"></tbody>
+    </table></div>
+  </section>
+  <section id="view-method" aria-label="Model and validation" hidden>
+    <h2>Model &amp; validation</h2>
+    <div id="method-body"></div>
+  </section>
+</main>
+<dialog id="detail" aria-label="Protocol detail"><div id="detail-body"></div></dialog>
+<footer class="wrap fine">
+  <p>Built from one sealed snapshot (<span id="src-line"></span>). Every figure on this page is recomputed from that snapshot by the program that wrote it; no outside data, no hardcoded protocol names.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
